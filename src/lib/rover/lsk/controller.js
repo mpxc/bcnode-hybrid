@@ -137,7 +137,12 @@ class Controller {
       return this._liskApi.blocks.get({ limit: 1 }).then(lastBlocks => {
         /* eslint-disable */
         try {
-          const lastBlock = lastBlocks.data[0];
+          let lastBlock;
+          if (lastBlocks.blocks !== undefined) {
+            lastBlock = lastBlocks.blocks[0];
+          } else {
+            lastBlock = lastBlocks.data[0];
+          }
           this._logger.debug(`Collected new block with id: ${inspect(lastBlock.id)}`);
 
           if (!this._blockCache.has(lastBlock.id)) {
